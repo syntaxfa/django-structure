@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: install-dependencies
+        name: Install dependencies
+        entry: bash -c 'pip install -r requirements/production.txt'
+        language: system
+        always_run: true
+
+      - id: gitlint
+        name: Run gitlint
+        entry: gitlint
+        language: python
+        stages: [commit-msg]
+        args: [--contrib=CT1, --msg-filename]
+
+      - id: pylint
+        name: Run pylint
+        entry: pylint
+        language: python
+        types: [python]

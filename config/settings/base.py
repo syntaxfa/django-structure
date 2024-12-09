@@ -168,3 +168,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=60)
 }
+
+# LOGGER
+LOGGER_NAME = os.getenv("LOGGER_NAME")

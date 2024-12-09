@@ -1,3 +1,4 @@
+# pylint: disable=import-error
 """ URL configuration """
 from django.contrib import admin
 from django.urls import path

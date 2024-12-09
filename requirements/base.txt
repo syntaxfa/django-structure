@@ -4,3 +4,4 @@ python-dotenv==1.0.1
 django-redis==5.4.0
 djangorestframework==3.15.2
 drf-spectacular==0.28.0
+pylint==3.3.2

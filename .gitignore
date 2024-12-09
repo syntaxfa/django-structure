@@ -398,3 +398,5 @@ pyrightconfig.json
 db*
 
 note.txt
+
+static

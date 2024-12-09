@@ -1,2 +1,4 @@
 -r base.txt
 django-cors-headers==4.6.0
+gunicorn==23.0.0
+gevent==24.11.1

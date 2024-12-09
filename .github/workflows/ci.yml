@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/test.txt
+
+      - name: Set up .env file
+        run: |
+          echo "SECURITY_KEY=django_secret_key_example" >> .env
+          echo "EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend" >> .env
+          echo "EMAIL_HOST=django.core.mail.backends.console.EmailBackend" >> .env
+          echo "EMAIL_BACKEND=smtp.gmail.com" >> .env
+          echo "EMAIL_PORT=465" >> .env
+          echo "EMAIL_HOST_USER=syntaxfa@gmail.com" >> .env
+          echo "EMAIL_HOST_PASSWORD=smpassword" >> .env
+          echo "ALLOWED_HOSTS='localhost, 127.0.0.1'" >> .env
+          echo "DJANGO_ENV=test" >> .env
+          echo "DJANGO_PORT=8000" >> .env
+          echo "REDIS_HOST=redis_syntax_host" >> .env
+          echo "REDIS_HOST_DEBUG=localhost" >> .env
+          echo "REDIS_PASSWORD=redis_syntax_password" >> .env
+          echo "REDIS_PORT=6755" >> .env
+          echo "CELERY_PREFETCH_MULTIPLIER=2" >> .env
+        shell: bash
+
+      - name: dockerUp
+        run: sudo make docker-test-up
+
+      - name: Test
+        run: make test
+
+      - name: dockerDown
+        run: sudo make docker-test-down
+
+      - name: Lint
+        run: make lint

@@ -10,5 +10,6 @@ doc_urls = [
 ]
 
 urlpatterns = [
-    path("schema/", include(doc_urls), name="schema")
+    path("schema/", include(doc_urls), name="schema"),
+    path("examples/", include("apps.example.urls"), name="example"),
 ]

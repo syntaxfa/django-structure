@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.common.models import BaseModel
 
-class Post(models.Model):
+
+class Post(BaseModel):
     title = models.CharField(max_length=191, verbose_name=_("title"))
     description = models.TextField(verbose_name=_("description"))
 

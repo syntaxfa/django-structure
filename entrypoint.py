@@ -16,6 +16,9 @@ if cpu_count == 1:
 else:
     WORKERS = (cpu_count * 2) + 1
 
+os.system("uv venv --python 3.12")
+os.system("uv sync --frozen")
+os.system("export PATH='/app/.venv/bin:$PATH'")
 
 # running django
 os.system("python3 manage.py migrate --no-input")

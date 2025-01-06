@@ -1,0 +1,12 @@
+docs
+.github
+.gitignore
+.gitlint
+docker-compose.yml
+docker-compose-development.yml
+LICENSE
+Makefile
+README.md
+readthedocs.yml
+nginx.conf
+redis.conf

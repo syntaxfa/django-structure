@@ -1,5 +1,10 @@
 FROM python:3.12-slim as builder
 
+LABEL name="alireza feizi" email="alirezafeyze44@gmail.com"
+LABEL "website.name"="syntaxfa"
+LABEL website="syntaxfa.com"
+LABEL desc="This is a python Dockerfile for django projects"
+
 # avoid stuck build due to user prompt
 ARG DEBIAN_FRONTEND=noninteractive
 

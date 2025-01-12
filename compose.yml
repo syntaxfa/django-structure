@@ -1,0 +1,103 @@
+name: syntax-compose
+
+networks:
+  backend_network:
+    name: syntax_compose_backend_network
+    driver: bridge
+    internal: true
+    external: false
+    labels:
+      com.syntaxfa.description: "Backend network"
+      com.syntaxfa.department: "IT/Backend"
+  webserver_network:
+    name: syntax_compose_webserver_network
+    driver: bridge
+    external: false
+    internal: false
+    labels:
+      com.syntaxfa.description: "Backend webserver network"
+      con.syntaxfa.department: "IT/Backend"
+
+services:
+  redis_syntax:
+    container_name: ${REDIS_HOST:?error}
+    hostname: ${REDIS_HOST:?error}
+    image: redis:latest
+    restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD:?error} --port ${REDIS_PORT:?error}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?error}
+      REDIS_PORT: ${REDIS_PORT:?error}
+    volumes:
+      - type: bind
+        source: ./redis.conf
+        target: /usr/local/etc/redis.conf
+        read_only: true
+        # ./redis.conf:/usr/local/etc/redis.conf:ro
+    networks:
+      - backend_network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-h", "localhost", "-p", "${REDIS_PORT:?error}", "-a", "${REDIS_PASSWORD:?error}", "PING" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  syntax_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: syntax_project
+    container_name: syntaxfa_container
+    env_file:
+      - .env
+    restart: always
+    command: sh -c "python3 entrypoint.py"
+    depends_on:
+      redis_syntax:
+        condition: service_healthy
+        restart: false
+    networks:
+      - backend_network
+      - webserver_network
+    volumes:
+      - type: bind
+        source: .
+        target: /code/
+      - type: bind
+        source: ./media
+        target: /code/media
+      - type: bind
+        source: ./static
+        target: /code/static
+    labels:
+      com.syntaxfa.project: "syntaxfa"
+      com.syntaxfa.description: "Syntaxfa backend application"
+      com.syntaxfa.department: "IT/Backend"
+
+  nginx_syntax:
+    image: nginx:latest
+    hostname: nginx_syntax
+    container_name: nginx_syntax_container
+    command: nginx -g 'daemon off;'
+    restart: always
+    depends_on:
+      syntax_app:
+        condition: service_started
+        restart: false
+    ports:
+      - 80:80
+    networks:
+      - webserver_network
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+      - type: bind
+        source: ./media
+        target: /code/media
+        read_only: true
+      - type: bind
+        source: ./static
+        target: /code/static
+        read_only: true

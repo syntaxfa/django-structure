@@ -3,7 +3,7 @@ docs
 .gitignore
 .gitlint
 docker-compose.yml
-docker-compose-development.yml
+compose-development.yml
 LICENSE
 Makefile
 README.md

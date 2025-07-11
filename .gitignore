@@ -400,3 +400,5 @@ db*
 note.txt
 
 static
+
+celerybeat-schedule*

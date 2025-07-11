@@ -22,7 +22,7 @@ services:
   redis_syntax:
     container_name: ${REDIS_HOST:?error}
     hostname: ${REDIS_HOST:?error}
-    image: redis:latest
+    image: redis:8.0.3
     restart: always
     command: redis-server --requirepass ${REDIS_PASSWORD:?error} --port ${REDIS_PORT:?error}
     environment:

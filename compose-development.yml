@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   redis:
-    image: redis:latest
+    image: redis:8.0.3
     container_name: syntaxfa_redis
     hostname: ${REDIS_HOST:?error}
     restart: always

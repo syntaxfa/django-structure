@@ -1,4 +1,4 @@
-FROM python:3.12-slim as builder
+FROM python:3.13-slim as builder
 
 LABEL name="alireza feizi" email="alirezafeyze44@gmail.com"
 LABEL "website.name"="syntaxfa"

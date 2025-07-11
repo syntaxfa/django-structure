@@ -9,7 +9,11 @@ doc_urls = [
     path("redoc/", SpectacularRedocView.as_view(), name="redoc"),
 ]
 
-urlpatterns = [
+v1 = [
     path("schema/", include(doc_urls), name="schema"),
     path("examples/", include("apps.example.urls"), name="example"),
+]
+
+urlpatterns = [
+    path("v1/", include(v1)),
 ]

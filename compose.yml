@@ -42,6 +42,36 @@ services:
       timeout: 5s
       retries: 10
 
+  syntax_celery_worker:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: celery -A config worker -B --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      - syntax_app
+      - redis_syntax
+    networks:
+      - backend_network
+    volumes:
+      - .:/code/
+    restart: always
+
+  syntax_celery_beat:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: 'celery -A config beat -l info -S django'
+    volumes:
+      - .:/code/
+    depends_on:
+      - syntax_app
+      - syntax_celery_worker
+    networks:
+      - backend_network
+    restart: always
+
   syntax_app:
     build:
       context: .

@@ -62,7 +62,6 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ------------------------------------------------------------------------------
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # MEDIA
 # ------------------------------------------------------------------------------
@@ -138,7 +137,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SYNTAX-FA API',
     'DESCRIPTION': 'syntax fa apis',
-    'VERSION': '3.0.0',
+    'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
     # OTHER SETTINGS
     'PLUGINS': [

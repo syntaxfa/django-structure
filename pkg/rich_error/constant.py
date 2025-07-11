@@ -2,4 +2,4 @@ OPERATION = "Operation"
 CODE = "Code"
 MESSAGE = "Message"
 META = "Meta"
-DEFAULT_CODE = 50_000
+DEFAULT_CODE = 500_000

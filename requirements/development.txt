@@ -1,2 +1,5 @@
 -r base.txt
-django-debug-toolbar==4.4.6
+django-debug-toolbar==5.2.0
+pylint==3.3.7
+pre-commit==4.2.0
+gitlint==0.19.1

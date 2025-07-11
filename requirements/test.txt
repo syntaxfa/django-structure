@@ -1,2 +1,2 @@
 -r base.txt
-model-bakery==1.20.0
+model-bakery==1.20.5

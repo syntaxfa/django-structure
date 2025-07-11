@@ -1,4 +1,5 @@
-version: '3.9'
+volumes:
+  postgres_syntax_data:
 
 services:
   redis:
@@ -18,3 +19,23 @@ services:
         # ./redis.conf:/usr/local/etc/redis.conf:ro
     ports:
       - ${REDIS_PORT:?error}:${REDIS_PORT:?error}
+
+  syntax_postgres:
+    image: postgres:17
+    container_name: syntax_postgres
+    hostname: manager_postgres
+    command: -p ${POSTGRES_PORT}
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_NAME:?error}
+      - POSTGRES_USER=${POSTGRES_USERNAME:?error}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
+    volumes:
+      - postgres_syntax_data:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT:?error}:${POSTGRES_PORT:?error}
+    healthcheck:
+      test: [CMD-SHELL, "sh -c 'pg_isready -U ${POSTGRES_USERNAME} -d ${POSTGRES_DB_NAME} -p ${POSTGRES_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

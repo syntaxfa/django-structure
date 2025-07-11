@@ -1,5 +1,8 @@
 name: syntax-compose
 
+volumes:
+  syntax_postgres_data:
+
 networks:
   backend_network:
     name: syntax_compose_backend_network
@@ -41,6 +44,26 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  syntax_postgres:
+    image: postgres:17
+    container_name: syntax_postgres
+    hostname: ${POSTGRES_HOST:?error}
+    command: -p ${POSTGRES_PORT:?error}
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_NAME:?error}
+      - POSTGRES_USER=${POSTGRES_USERNAME:?error}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
+    volumes:
+      - syntax_postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+    healthcheck:
+      test: [CMD-SHELL, "sh -c 'pg_isready -U ${POSTGRES_USERNAME} -d ${POSTGRES_DB_NAME} -p ${POSTGRES_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   syntax_celery_worker:
     build:

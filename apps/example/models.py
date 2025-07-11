@@ -2,10 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel
+from apps.example.config import PostConfig
 
 
 class Post(BaseModel):
-    title = models.CharField(max_length=191, verbose_name=_("title"))
+    title = models.CharField(max_length=PostConfig.title_max_length, verbose_name=_("title"))
     description = models.TextField(verbose_name=_("description"))
 
     class Meta:

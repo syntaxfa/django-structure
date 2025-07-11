@@ -2,8 +2,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.views import APIView
 
-from apps.api.response import base_response
-from apps.example.codes import response_with_error
+from apps.api.response import base_response, base_response_with_error
 from apps.example.serializers.post import PostSerializer
 from apps.example.services.post import get_post_service
 
@@ -20,4 +19,4 @@ class PostDetailView(APIView):
             return base_response(status_code=status.HTTP_200_OK, result=self.serializer_class(
                 instance=service.get_post(post_id=post_id)).data)
         except Exception as err:
-            return response_with_error(err)
+            return base_response_with_error(err)

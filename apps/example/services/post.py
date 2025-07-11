@@ -1,26 +1,20 @@
-from dataclasses import dataclass
 from functools import cache
 
 from django.core.cache import cache as django_cache
 
 from apps.example import codes
+from apps.example.config import PostServiceConfig
 from apps.example.models import Post
-from apps.common.raising import raise_and_log
-from constants import example
+from apps.example import constants
+from apps.common.raising import err_log
 from pkg.rich_error.error import RichError
 
 
-@dataclass
-class Config:
-    post_cache_exp_in_seconds: int = 900  # 15 minutes
-    post_cache_key: str = "posts"
-
-
 class PostService:
-    Op = "example.services.PostService."
+    Op = "example.services.post.PostService."
 
-    def __init__(self, config: Config):
-        self.config = config
+    def __init__(self, cfg: PostServiceConfig):
+        self.cfg = cfg
 
     def _get_post_by_id_or_raise(self, post_id: int):
         op = self.Op + "_get_post_by_id_or_raise"
@@ -31,10 +25,9 @@ class PostService:
                    set_code(codes.POST_NOT_FOUND))
 
     def _get_post_key(self, post_id: int):
-        return f"{self.config.post_cache_key}:{post_id}"
+        return f"{self.cfg.post_cache_key}:{post_id}"
 
     def get_post(self, post_id: int):
-        op = self.Op + "get_post"
         meta = {"post_id": post_id}
 
         try:
@@ -44,14 +37,15 @@ class PostService:
                 return post
 
             post = self._get_post_by_id_or_raise(post_id=post_id)
-            django_cache.set(key=key, value=post, timeout=self.config.post_cache_exp_in_seconds)
+            django_cache.set(key=key, value=post, timeout=self.cfg.post_cache_exp_in_seconds)
             return post
         except Exception as err:
-            raise_and_log(example.APP_NAME, op, err, example.POST_SERVICE_GET_POST, example.POST_SERVICE_GET_POST, meta)
+            err_log(constants.APP_NAME, err, constants.POST_SERVICE, constants.GET_POST, meta)
+            raise err
 
 
 @cache
 def get_post_service():
     return PostService(
-        config=Config()
+        cfg=PostServiceConfig(),
     )

@@ -3,13 +3,13 @@
 ROOT=$(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 
 lint:
-	pylint .
+	pylint $(ROOT)
 
 test:
 	python manage.py test
 
 docker-test-up:
-	docker compose -f $(ROOT)/docker-compose-development.yml up -d
+	docker compose -f $(ROOT)/compose-development.yml up -d
 
 docker-test-down:
-	docker compose -f $(ROOT)/docker-compose-development.yml down
+	docker compose -f $(ROOT)/compose-development.yml down

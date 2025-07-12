@@ -13,7 +13,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -36,6 +36,16 @@ jobs:
           echo "REDIS_PASSWORD=redis_syntax_password" >> .env
           echo "REDIS_PORT=6755" >> .env
           echo "CELERY_PREFETCH_MULTIPLIER=2" >> .env
+          echo "LOGGER_NAME=standard" >> .env
+          echo "POSTGRES_HOST=ghestat_postgres_host" >> .env
+          echo "POSTGRES_HOST_DEBUG=localhost" >> .env
+          echo "POSTGRES_DB_NAME=postgres" >> .env
+          echo "POSTGRES_USERNAME=username" >> .env
+          echo "POSTGRES_PASSWORD=password" >> .env
+          echo "POSTGRES_PORT=5699" >> .env
+          echo "POSTGRES_CONN_MAX_AGE=600" >> .env
+          echo "JWT_ACCESS_TOKEN_LIFETIME_IN_SECONDS=120" >> .env
+          echo "JWT_REFRESH_TOKEN_LIFETIME_IN_DAYS=90" >> .env
         shell: bash
 
       - name: dockerUp

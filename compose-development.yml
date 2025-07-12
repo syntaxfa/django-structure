@@ -23,7 +23,7 @@ services:
   syntax_postgres:
     image: postgres:17
     container_name: syntax_postgres
-    hostname: manager_postgres
+    hostname: ${POSTGRES_HOST}
     command: -p ${POSTGRES_PORT}
     restart: always
     environment:

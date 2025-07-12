@@ -43,3 +43,8 @@ CACHES = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+# CELERY
+CELERY_BROKER_URL = (f"redis://:{os.getenv('REDIS_PASSWORD')}@{os.getenv('REDIS_HOST_DEBUG')}"
+                     f":{os.getenv('REDIS_PORT')}/0")
+CELERY_PREFETCH_MULTIPLIER = int(os.getenv("CELERY_PREFETCH_MULTIPLIER"))

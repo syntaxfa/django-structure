@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from apps.example.codes import CODE_TRANSLATION as EXAMPLE_CODE_TRANSLATION
+from apps.authentication.codes import CODE_TRANSLATION as AUTHENTICATION_CODE_TRANSLATION
 
 # 200_000
 OK = 200_000
@@ -12,5 +12,5 @@ CODE_TRANSLATION = {
     OK: _("OK"),
     CREATED: _("Created"),
     INTERNAL_SERVER_ERROR: _("Internal Server Error"),
-    **EXAMPLE_CODE_TRANSLATION, # example codes starts with 000
+    **AUTHENTICATION_CODE_TRANSLATION, # authentication code starts with 100
 }

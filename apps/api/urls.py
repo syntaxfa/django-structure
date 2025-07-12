@@ -11,7 +11,7 @@ doc_urls = [
 
 v1 = [
     path("schema/", include(doc_urls), name="schema"),
-    path("examples/", include("apps.example.urls"), name="example"),
+    path("auth/", include("apps.authentication.urls")),
 ]
 
 urlpatterns = [

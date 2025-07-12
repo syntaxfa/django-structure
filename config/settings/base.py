@@ -54,7 +54,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.api.apps.ApiConfig",
     "apps.common.apps.CommonConfig",
-    # "apps.authentication.apps.AuthenticationConfig"
+    "apps.authentication.apps.AuthenticationConfig"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -129,6 +129,7 @@ MIDDLEWARE = BASE_MIDDLEWARE.copy()
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.authentication.authenticate.JWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
@@ -167,9 +168,12 @@ SITE_ID = 1
 
 # JWT
 # ------------------------------------------------------------------------------
+JWT_ACCESS_TOKEN_LIFETIME_IN_SECONDS = int(os.getenv("JWT_ACCESS_TOKEN_LIFETIME_IN_SECONDS"))
+JWT_REFRESH_TOKEN_LIFETIME_IN_DAYS = int(os.getenv("JWT_REFRESH_TOKEN_LIFETIME_IN_DAYS"))
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=60)
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=JWT_ACCESS_TOKEN_LIFETIME_IN_SECONDS),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=JWT_REFRESH_TOKEN_LIFETIME_IN_DAYS)
 }
 
 # LOGGER

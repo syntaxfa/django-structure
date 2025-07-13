@@ -13,3 +13,15 @@ docker-test-up:
 
 docker-test-down:
 	docker compose -f $(ROOT)/compose-development.yml down
+
+docker-dev-up:
+	docker compose -f $(ROOT)/compose-development.yml up -d
+
+docker-dev-down:
+	docker compose -f $(ROOT)/compose-development.yml down
+
+docker-prod-up:
+	docker compose up -d
+
+docker-prod-down:
+	docker compose down

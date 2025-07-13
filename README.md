@@ -70,7 +70,7 @@ A robust and scalable Django project structure designed for building modern web 
     For a development environment, run:
 
     ```shell
-    docker compose --file compose-development.yml up -d
+    make docker-dev-up
     ```
 
     This command, build the images and start the services.

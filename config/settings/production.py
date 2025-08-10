@@ -22,8 +22,8 @@ INSTALLED_APPS += APPS
 DB_NAME = os.getenv('POSTGRES_DB_NAME')
 DB_USER = os.getenv('POSTGRES_USERNAME')
 DB_PASS = os.getenv('POSTGRES_PASSWORD')
-DB_HOST = os.getenv('POSTGRES_HOST')
-DB_PORT = os.getenv('POSTGRES_PORT')
+DB_HOST = os.getenv('COMPANY_PGBOUNCER_HOST')
+DB_PORT = os.getenv('COMPANY_PGBOUNCER_PORT')
 POSTGRES_CONN_MAX_AGE = int(os.getenv('POSTGRES_CONN_MAX_AGE'))
 
 DATABASES = {
@@ -35,6 +35,9 @@ DATABASES = {
         'HOST': DB_HOST,
         'PORT': DB_PORT,
         'CONN_MAX_AGE': POSTGRES_CONN_MAX_AGE,
+        'OPTIONS': {
+            'connect_timeout': 5,
+        },
     }
 }
 

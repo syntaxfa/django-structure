@@ -45,9 +45,9 @@ services:
       timeout: 5s
       retries: 10
 
-  syntax_postgres:
+  syntax_postgresql:
     image: postgres:17
-    container_name: syntax_postgres
+    container_name: syntax_postgresql
     hostname: ${POSTGRES_HOST:?error}
     command: -p ${POSTGRES_PORT:?error}
     restart: always
@@ -64,6 +64,43 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  syntax_pgbouncer:
+    image: bitnami/pgbouncer:1.24.1
+    container_name: syntax_pgbouncer
+    hostname: syntax_pgbouncer
+    restart: always
+    environment:
+      # Connection to DB
+      PGBOUNCER_DATABASE: ${POSTGRES_DB_NAME}
+      PGBOUNCER_DATABASE_HOST: ${POSTGRES_HOST}
+      PGBOUNCER_DATABASE_PORT: ${POSTGRES_PORT}
+      PGBOUNCER_DATABASE_USER: ${POSTGRES_USERNAME}
+      PGBOUNCER_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      # PgBouncer settings
+      PGBOUNCER_LISTEN_ADDR: 0.0.0.0
+      PGBOUNCER_LISTEN_PORT: 6432
+      PGBOUNCER_AUTH_TYPE: md5
+      PGBOUNCER_POOL_MODE: transaction
+      PGBOUNCER_MAX_CLIENT_CONN: 500
+      PGBOUNCER_DEFAULT_POOL_SIZE: 16
+      PGBOUNCER_MIN_POOL_SIZE: 5
+      PGBOUNCER_RESERVE_POOL_SIZE: 10
+      PGBOUNCER_RESERVE_POOL_TIMEOUT: 5
+      PGBOUNCER_SERVER_IDLE_TIMEOUT: 300
+      PGBOUNCER_CONNECT_TIMEOUT: 5
+      PGBOUNCER_LOGIN_RETRY: 5
+      PGBOUNCER_QUERY_TIMEOUT: 0
+      # PgBouncer health-check environments
+      POSTGRESQL_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRESQL_HOST: ${POSTGRES_HOST}
+      POSTGRESQL_PORT: ${POSTGRES_PORT}
+    depends_on:
+      syntax_postgresql:
+        condition: service_healthy
+    networks:
+      - backend_network
 
   syntax_celery_worker:
     build:

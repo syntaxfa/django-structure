@@ -1,3 +1,2 @@
 -r base.txt
-model-bakery==1.20.5
-pylint==3.3.7
+model-bakery==1.23.2

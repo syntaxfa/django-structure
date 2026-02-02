@@ -1,9 +1,9 @@
 Django==5.2
-djangorestframework-simplejwt==5.5.0
-python-dotenv==1.1.1
+djangorestframework-simplejwt==5.5.1
+python-dotenv==1.2.1
 django-redis==6.0.0
-djangorestframework==3.16.0
-drf-spectacular==0.28.0
-celery==5.5.3
+djangorestframework==3.16.1
+drf-spectacular==0.29.0
+celery==5.6.2
 django-celery-beat==2.8.1
-psycopg2-binary==2.9.10
+psycopg2-binary==2.9.11
